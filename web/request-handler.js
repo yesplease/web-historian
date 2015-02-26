@@ -21,9 +21,8 @@ exports.handleRequest = function (req, res) {
       });
     }
 
-    //case 2: is it for an archived site? (achives/sites)
 
-    //case 3: is it for a site asset? (web/public)
+    //case 2: is it for a site asset? (web/public)
     if ( req.url === '/index.html' ) {
       fs.readFile('./public/index.html', function (err, data) {
         if (err) throw err;
@@ -31,6 +30,15 @@ exports.handleRequest = function (req, res) {
         res.end(data);
       });
     }
+
+    //case 3: is it for an archived site? (achives/sites)
+    // /www.google.com ???
+
+    // if site is in sites.txt
+      // serve it up
+    // if not
+      // add to queue/create it
+      // serve up loading page (come back later)
   }
 
   // res.end(archive.paths.list);
