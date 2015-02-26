@@ -1,6 +1,7 @@
 var fs = require('fs');
 var path = require('path');
 var _ = require('underscore');
+var request = require('http-request');
 
 /*
  * You will need to reuse the same paths many times over in the course of this sprint.
@@ -25,17 +26,26 @@ exports.initialize = function(pathsObj){
 // The following function names are provided to you to suggest how you might
 // modularize your code. Keep it clean!
 
-exports.readListOfUrls = function(){
+exports.readListOfURLs = function(){
 };
 
-exports.isUrlInList = function(){
+exports.isURLInList = function(url){
+  // url = "'"+url+"'";
+  return fs.readFile(exports.paths.list, 'utf8', function(err, data){
+    if (err) throw err;
+    // console.log(data.split('\n'));
+    // console.log("url to string after splitting: ", data.split('\n'), ['www.facebook.com'], url);
+    console.log( 'www.facebook.com' === data.split('\n')[2] );
+
+    return _.contains( testdata, url);
+  });
 };
 
-exports.addUrlToList = function(){
+exports.addURLToList = function(){
 };
 
 exports.isURLArchived = function(){
 };
 
-exports.downloadUrls = function(){
+exports.downloadURLs = function(){
 };
