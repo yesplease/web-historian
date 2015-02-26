@@ -12,8 +12,8 @@ var request = require('http-request');
 
 exports.paths = {
   'siteAssets' : path.join(__dirname, '../web/public'),
-  'archivedSites' : path.join(__dirname, '../archives/sites'),
-  'list' : path.join(__dirname, '../web/archives/sites.txt') //added web
+  'archivedSites' : path.join(__dirname, '../archives/sites'), //added web
+  'list' : path.join(__dirname, '../archives/sites.txt') //added web
 };
 
 // Used for stubbing paths for jasmine tests, do not modify
@@ -27,12 +27,13 @@ exports.initialize = function(pathsObj){
 // modularize your code. Keep it clean!
 
 exports.readListOfURLs = function(){
+  //returns an array of all the URLs in sits.txt
+  // console.log("This is our array of all sites: ", fs.readFileSync(exports.paths.list, 'utf8').split('\n'));
+  return fs.readFileSync(exports.paths.list, 'utf8').split('\n');
 };
 
 exports.isURLInList = function(url){
-  var sites = fs.readFileSync(exports.paths.list, 'utf8');
-  // console.log("Our boolean test result for contains: ", _.contains( sites.split('\n'), url ));
-  return _.contains( sites.split('\n'), url )
+  return _.contains( exports.readListOfURLs(), url );
 };
 
 exports.addURLToList = function(url){
@@ -42,8 +43,37 @@ exports.addURLToList = function(url){
   });
 };
 
-exports.isURLArchived = function(){
+exports.isURLArchived = function(url, callback){
+  //read our file system to see if that asset has been added / completed
+  //var sites = exports.readListofURLs();
+  var fileDir = exports.paths.archivedSites + '/' + url;
+  console.log("This is the file directory I'm looking for: ", fileDir);
+  //if the file doesn't exist, the openSync method throws an exception.
+  //How do we handle an exception here? Does it evaluate to false when
+  //we try to open a file that doesn't exist?
+  // fs.openSync(fileDir, 'r');
+
+
+
+  fs.open(fileDir, 'r', function(err, fd){
+    console.log("This is FD!: ", fd);
+    console.log("We are in FS.open");
+
+    // invoke callback(fd);
+    callback(fd);
+    }
+  });
+  // exports.paths.archivedSites
+  // file name should be the queryURL
+
+
 };
 
 exports.downloadURLs = function(){
+
+  //go over list and check if item in list has been archived before
+    //if yes, read next item
+    //if no, call htmlfetcher to go create that asset for us.
+  var sites = exports.readListofURLs();
+  return sites.split('\n');
 };

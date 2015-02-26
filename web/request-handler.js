@@ -23,17 +23,19 @@ exports.handleRequest = function (req, res) {
     }
 
     //look at incoming URL to determine if it is a valid archive query?
-    //if yes,
     if ( req.url.substr(0, 6) === '/?url=' ) {
       // check if query site is in sites.txt
       var queryURL = req.url.substr(6);
       // console.log('valid query:', queryURL);
       // console.log('is it in the list?', archive.isURLInList(queryURL) );
 
-      if ( archive.isURLInList(queryURL) ) {
+      if ( archive.isURLInList(queryURL) ) {  // NOTE: UPDATE TO isURLArchived
         // serve it up (serveAssets)
         console.log('archive is in list!');
       } else {
+        console.log("Is our URL archived? ", archive.isURLArchived(queryURL, function(fd){
+          return true;
+        })); //adding for testing -- take out
         archive.addURLToList(queryURL);
       }
 
