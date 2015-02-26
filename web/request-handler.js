@@ -28,16 +28,14 @@ exports.handleRequest = function (req, res) {
       // check if query site is in sites.txt
       var queryURL = req.url.substr(6);
       // console.log('valid query:', queryURL);
-      console.log('is it in the list?', archive.isURLInList(queryURL) );
+      // console.log('is it in the list?', archive.isURLInList(queryURL) );
 
       if ( archive.isURLInList(queryURL) ) {
-        //if yes:
-          // serve it up (serveAssets)
-          console.log('archive is in list!');
+        // serve it up (serveAssets)
+        console.log('archive is in list!');
+      } else {
+        archive.addURLToList(queryURL);
       }
-        // if not
-          // add to queue
-          // archive.addURLToList()
 
           // serve up loading page (come back later)
     //if not, is it a site asset that we have (e.g. index.html)

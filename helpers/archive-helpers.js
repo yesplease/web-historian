@@ -13,7 +13,7 @@ var request = require('http-request');
 exports.paths = {
   'siteAssets' : path.join(__dirname, '../web/public'),
   'archivedSites' : path.join(__dirname, '../archives/sites'),
-  'list' : path.join(__dirname, '../archives/sites.txt')
+  'list' : path.join(__dirname, '../web/archives/sites.txt') //added web
 };
 
 // Used for stubbing paths for jasmine tests, do not modify
@@ -30,18 +30,16 @@ exports.readListOfURLs = function(){
 };
 
 exports.isURLInList = function(url){
-  // url = "'"+url+"'";
-  return fs.readFile(exports.paths.list, 'utf8', function(err, data){
-    if (err) throw err;
-    // console.log(data.split('\n'));
-    // console.log("url to string after splitting: ", data.split('\n'), ['www.facebook.com'], url);
-    console.log( 'www.facebook.com' === data.split('\n')[2] );
-
-    return _.contains( testdata, url);
-  });
+  var sites = fs.readFileSync(exports.paths.list, 'utf8');
+  // console.log("Our boolean test result for contains: ", _.contains( sites.split('\n'), url ));
+  return _.contains( sites.split('\n'), url )
 };
 
-exports.addURLToList = function(){
+exports.addURLToList = function(url){
+  fs.appendFile(exports.paths.list, url+'\n','utf8', function(err){
+    if (err) throw err;
+    console.log('append like a BOSS!');
+  });
 };
 
 exports.isURLArchived = function(){
